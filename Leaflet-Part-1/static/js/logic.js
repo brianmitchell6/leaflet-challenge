@@ -17,7 +17,7 @@ function createMap(earthquakes) {
 
     let map = L.map("map", {
         center: [40.7608, -111.8910],
-        zoom: 4,
+        zoom: 5,
         layers: [streetMap, earthquakes]
     });
 
@@ -38,11 +38,13 @@ function createMarkers(response) {
     let quakeProp = quakeResponse.properties;
     let quakeCoord = quakeResponse.geometry.coordinates;
     
-    // For each station, create a marker, and bind a popup with the station's name.
-    let quakeMarker = L.marker([quakeCoord[1], quakeCoord[0]])
-      .bindPopup("<h3>" + quakeProp.place + "<h3><h3>Magnitude: " + quakeProp.mag + "</h3>");
+    // For each station, create a marker, and bind a popup with the earthquakes location, magnitude, and depth.
+    let quakeMarker = L.circle([quakeCoord[1], quakeCoord[0]], {
+        radius: quakeProp.mag*10000,
+        fillOpacity: 1.0
+    }).bindPopup("<h3>" + quakeProp.place + "<h3><h3>Magnitude: " + quakeProp.mag + "<h3><h3>Depth: " + quakeCoord[2] + "</h3>");
 
-    // Add the marker to the bikeMarkers array.
+    // Add the marker to the quakeMarkers array.
     quakeMarkers.push(quakeMarker);
   }
 
