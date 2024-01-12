@@ -27,6 +27,30 @@ function createMap(earthquakes) {
     }).addTo(map);
 }
 
+function createMarkers(response) {
+    
+    // Initialize an array to hold the earthquake markers.
+  let quakeMarkers = [];
+//    console.log(Object.keys(response.features).length);
+  // Loop through the earthquakes
+  for (let index = 0; index < Object.keys(response.features).length; index++) {
+    let quakeResponse = response.features[index];
+    console.log(quakeResponse);
+    let quakeProp = quakeResponse.properties;
+    let quakeCoord = quakeResponse.geometry.coordinates;
+    
+    // For each station, create a marker, and bind a popup with the station's name.
+    let quakeMarker = L.marker([quakeCoord[1], quakeCoord[0]])
+      .bindPopup("<h3>" + quakeProp.place + "<h3><h3>Magnitude: " + quakeProp.mag + "</h3>");
+
+    // Add the marker to the bikeMarkers array.
+    quakeMarkers.push(quakeMarker);
+  }
+
+  // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
+  createMap(L.layerGroup(quakeMarkers));
+}
+
 
 // Perform an API call to the USGS Earthquake API to get the earthquake information. Call createMarkers when it completes.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(createMarkers);
