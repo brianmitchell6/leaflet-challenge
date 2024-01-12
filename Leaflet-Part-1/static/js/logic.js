@@ -35,7 +35,6 @@ function createMarkers(response) {
   // Loop through the earthquakes
   for (let index = 0; index < Object.keys(response.features).length; index++) {
     let quakeResponse = response.features[index];
-    console.log(quakeResponse);
     let quakeProp = quakeResponse.properties;
     let quakeCoord = quakeResponse.geometry.coordinates;
     
